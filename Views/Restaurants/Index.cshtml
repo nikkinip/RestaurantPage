@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Menu</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Dish)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+               <img src="@item.ImageUrl" alt="@item.Dish" style="max-width:100px; max-height:100px;" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Origin)
