@@ -20,9 +20,20 @@ namespace RestaurantPage.Controllers
         }
 
         // GET: Restaurants
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Restaurant.ToListAsync());
+            if(_context.Restaurant == null)
+            {
+                return Problem("Entity set 'RestaurantPageContext.Restaurant' is null.");
+            }
+            var dish = from m in _context.Restaurant
+                        select m;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                dish = dish.Where(s => s.Dish!.Contains(searchString));
+            }
+            return View(await dish.ToListAsync());  
+           // return View(await _context.Restaurant.ToListAsync());
         }
 
         // GET: Restaurants/Details/5
