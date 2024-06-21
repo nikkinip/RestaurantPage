@@ -10,33 +10,22 @@ using RestaurantPage.Models;
 
 namespace RestaurantPage.Controllers
 {
-    public class RestaurantsController : Controller
+    public class DishesController : Controller
     {
         private readonly RestaurantPageContext _context;
 
-        public RestaurantsController(RestaurantPageContext context)
+        public DishesController(RestaurantPageContext context)
         {
             _context = context;
         }
 
-        // GET: Restaurants
-        public async Task<IActionResult> Index(string searchString)
+        // GET: Dishes
+        public async Task<IActionResult> Index()
         {
-            if(_context.Restaurant == null)
-            {
-                return Problem("Entity set 'RestaurantPageContext.Restaurant' is null.");
-            }
-            var dish = from m in _context.Restaurant
-                        select m;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                dish = dish.Where(s => s.Dish!.Contains(searchString));
-            }
-            return View(await dish.ToListAsync());  
-           // return View(await _context.Restaurant.ToListAsync());
+            return View(await _context.Dishes.ToListAsync());
         }
 
-        // GET: Restaurants/Details/5
+        // GET: Dishes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,39 +33,39 @@ namespace RestaurantPage.Controllers
                 return NotFound();
             }
 
-            var restaurant = await _context.Restaurant
+            var dish = await _context.Dishes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (restaurant == null)
+            if (dish == null)
             {
                 return NotFound();
             }
 
-            return View(restaurant);
+            return View(dish);
         }
 
-        // GET: Restaurants/Create
+        // GET: Dishes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Restaurants/Create
+        // POST: Dishes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Dish,ImageUrl,Origin,Price")] Restaurant restaurant)
+        public async Task<IActionResult> Create([Bind("Id,Name,ImageUrl,DishType,Origin,Price")] Dish dish)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(restaurant);
+                _context.Add(dish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(restaurant);
+            return View(dish);
         }
 
-        // GET: Restaurants/Edit/5
+        // GET: Dishes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +73,22 @@ namespace RestaurantPage.Controllers
                 return NotFound();
             }
 
-            var restaurant = await _context.Restaurant.FindAsync(id);
-            if (restaurant == null)
+            var dish = await _context.Dishes.FindAsync(id);
+            if (dish == null)
             {
                 return NotFound();
             }
-            return View(restaurant);
+            return View(dish);
         }
 
-        // POST: Restaurants/Edit/5
+        // POST: Dishes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Dish,ImageUrl,Origin,Price")] Restaurant restaurant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl,DishType,Origin,Price")] Dish dish)
         {
-            if (id != restaurant.Id)
+            if (id != dish.Id)
             {
                 return NotFound();
             }
@@ -108,12 +97,12 @@ namespace RestaurantPage.Controllers
             {
                 try
                 {
-                    _context.Update(restaurant);
+                    _context.Update(dish);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RestaurantExists(restaurant.Id))
+                    if (!DishExists(dish.Id))
                     {
                         return NotFound();
                     }
@@ -124,10 +113,10 @@ namespace RestaurantPage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(restaurant);
+            return View(dish);
         }
 
-        // GET: Restaurants/Delete/5
+        // GET: Dishes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,34 +124,34 @@ namespace RestaurantPage.Controllers
                 return NotFound();
             }
 
-            var restaurant = await _context.Restaurant
+            var dish = await _context.Dishes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (restaurant == null)
+            if (dish == null)
             {
                 return NotFound();
             }
 
-            return View(restaurant);
+            return View(dish);
         }
 
-        // POST: Restaurants/Delete/5
+        // POST: Dishes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var restaurant = await _context.Restaurant.FindAsync(id);
-            if (restaurant != null)
+            var dish = await _context.Dishes.FindAsync(id);
+            if (dish != null)
             {
-                _context.Restaurant.Remove(restaurant);
+                _context.Dishes.Remove(dish);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RestaurantExists(int id)
+        private bool DishExists(int id)
         {
-            return _context.Restaurant.Any(e => e.Id == id);
+            return _context.Dishes.Any(e => e.Id == id);
         }
     }
 }

@@ -14,6 +14,6 @@ namespace RestaurantPage.Data
         {
         }
 
-        public DbSet<RestaurantPage.Models.Restaurant> Restaurant { get; set; } = default!;
+        public DbSet<RestaurantPage.Models.Dish> Dishes { get; set; } = default!;
     }
 }
