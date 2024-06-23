@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RestaurantPage.Data;
+using Microsoft.AspNetCore.Identity;
+using RestaurantPage.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RestaurantPageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RestaurantPageContext") ?? throw new InvalidOperationException("Connection string 'RestaurantPageContext' not found.")));
+
+builder.Services.AddDefaultIdentity<PageUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<RestaurantPageContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,10 +27,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 app.Run();

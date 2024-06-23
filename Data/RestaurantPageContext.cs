@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RestaurantPage.Models;
 
+
 namespace RestaurantPage.Data
 {
-    public class RestaurantPageContext : DbContext
+    public class RestaurantPageContext : IdentityDbContext<PageUser>
     {
         public RestaurantPageContext (DbContextOptions<RestaurantPageContext> options)
             : base(options)
