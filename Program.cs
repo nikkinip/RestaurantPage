@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RestaurantPage.Data;
 using Microsoft.AspNetCore.Identity;
 using RestaurantPage.Models;
+using Microsoft.AspNetCore.Builder;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RestaurantPageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RestaurantPageContext") ?? throw new InvalidOperationException("Connection string 'RestaurantPageContext' not found.")));
@@ -31,8 +32,15 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Gallery",
+    pattern: "{controller=Home}/{action=Gallery}/{id?}");
+    
+
 app.MapRazorPages();
 app.Run();
