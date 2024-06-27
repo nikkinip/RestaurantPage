@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
-namespace RestaurantPage.Models
-{
-    public class Dish
+
+namespace RestaurantPage.Models;
+
+
+public class Dish
     { 
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -11,5 +14,5 @@ namespace RestaurantPage.Models
         public string? Origin { get; set; }
         public decimal Price { get; set; }
     }
-}
+
     
